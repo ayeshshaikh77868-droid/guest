@@ -1,0 +1,68 @@
+ 8:Demo on URL Navigation 
+ Step 1: Add the Package Dependency
+Open your project's pubspec.yaml file and add the url_launcher package under dependencies:
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^6.3.0
+  Run flutter pub get in your terminal to install it.
+  Step 3: Complete Dart Code (main.dart)
+Replace your lib/main.dart with the updated code below, which includes robust error handling and explicit launch modes:
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  final Uri url = const Uri(
+    scheme: 'https',
+    host: 'www.google.com',
+  );
+
+  Future<void> openURL(BuildContext context) async {
+    try {
+      final bool launched = await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not launch $url')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error launching URL: $e')),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("URL Navigation"),
+        ),
+        body: Center(
+          child: Builder(
+            builder: (BuildContext innerContext) {
+              return ElevatedButton(
+                onPressed: () => openURL(innerContext),
+                child: const Text("Open Google"),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
