@@ -1,0 +1,182 @@
+Write a program  to demo animation 
+
+Implicit Animation :
+import 'package:flutter/material.dart';
+void main() => runApp(MyApp());
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp>{
+  double _width = 100;
+  double _height = 100;
+  Color _color = Colors.blue;
+
+  void _changeBox() {
+    setState(() {
+      _width = _width == 100 ? 200:100;
+      _height = _height == 100 ? 200 : 100;
+      _color = _color == Colors.blue ? Colors.red : Colors.blue;
+    });
+  }
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
+      home:Scaffold(
+        appBar: AppBar(title:Text('Implicit Animation')),
+        body:Center(
+            child:AnimatedContainer(
+              width:_width,
+              height:_height,
+              color:_color,
+              duration: Duration(seconds:1),
+              curve:Curves.easeInOut,
+
+            )
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _changeBox,
+          child: Icon(Icons.play_arrow),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      ),
+    );
+  }
+}
+
+tween animation:
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp>
+    with SingleTickerProviderStateMixin {
+
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    _animation = Tween<double>(
+      begin: 50,
+      end: 300,
+    ).animate(_controller);
+
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Tween Animation'),
+        ),
+        body: AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return Center(
+              child: Container(
+                width: _animation.value,
+                height: _animation.value,
+                color: Colors.blue,
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+explicit:
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp>
+    with SingleTickerProviderStateMixin {
+
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    );
+
+    _animation = Tween<double>(
+      begin: 100,
+      end: 200,
+    ).animate(_controller);
+  }
+
+  void _startAnimation() {
+    _controller.forward(from: 0);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Explicit Animation'),
+        ),
+        body: Center(
+          child: AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return Container(
+                width: _animation.value,
+                height: _animation.value,
+                color: Colors.blue,
+              );
+            },
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _startAnimation,
+          child: Icon(Icons.play_arrow),
+        ),
+      ),
+    );
+  }
+}
