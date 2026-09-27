@@ -1,0 +1,279 @@
+Create the Required Files:In the Project pane on the left, navigate to lib/.   
+Right-click the lib folder and select New > Dart File. 
+Create two separate files named:RegistrationForm.dart   LoginForm.dart   
+Part A: Registration Form (lib/RegistrationForm.dart)This page includes fields for Name, Email ID, Mobile Number, Gender, and Hobbies using widgets like 
+TextField, Radio, CheckboxListTile, GridView, and SingleChildScrollView.
+When clicking Submit, data is displayed on the screen as well as logged to the console.   
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: RegistrationPage(),
+  ));
+}
+
+class RegistrationPage extends StatefulWidget {
+  @override
+  _RegistrationPageState createState() => _RegistrationPageState();
+}
+
+class _RegistrationPageState extends State<RegistrationPage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+
+  String gender = "Male";
+
+  bool reading = false;
+  bool music = false;
+  bool sports = false;
+  bool travelling = false;
+
+  String result = "";
+
+  void submitData() {
+    List<String> hobbies = [];
+
+    if (reading) hobbies.add("Reading");
+    if (music) hobbies.add("Music");
+    if (sports) hobbies.add("Sports");
+    if (travelling) hobbies.add("Travelling");
+
+    String data = '''Name: ${nameController.text}
+Email: ${emailController.text}
+Mobile: ${mobileController.text}
+Gender: $gender
+Hobbies: ${hobbies.join(", ")}''';
+
+    // Display in Console
+    print(data);
+
+    // Display on Screen
+    setState(() {
+      result = data;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Registration Form"),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Name"),
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 15),
+            Text("Email"),
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 15),
+            Text("Mobile No"),
+            TextField(
+              controller: mobileController,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            Text("Gender"),
+            Row(
+              children: [
+                Radio(
+                  value: "Male",
+                  groupValue: gender,
+                  onChanged: (value) {
+                    setState(() {
+                      gender = value.toString();
+                    });
+                  },
+                ),
+                Text("Male"),
+                Radio(
+                  value: "Female",
+                  groupValue: gender,
+                  onChanged: (value) {
+                    setState(() {
+                      gender = value.toString();
+                    });
+                  },
+                ),
+                Text("Female"),
+              ],
+            ),
+            SizedBox(height: 20),
+            Text("Hobbies"),
+            GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              childAspectRatio: 4,
+              children: [
+                CheckboxListTile(
+                  title: Text("Reading"),
+                  value: reading,
+                  onChanged: (value) {
+                    setState(() {
+                      reading = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text("Music"),
+                  value: music,
+                  onChanged: (value) {
+                    setState(() {
+                      music = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text("Sports"),
+                  value: sports,
+                  onChanged: (value) {
+                    setState(() {
+                      sports = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
+                  title: Text("Travelling"),
+                  value: travelling,
+                  onChanged: (value) {
+                    setState(() {
+                      travelling = value!;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: submitData,
+                child: Text("Submit"),
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              result,
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+Part B: Login Page Validation (lib/LoginForm.dart)
+This page validates credentials and displays 
+a Green SnackBar for valid credentials or a Red SnackBar for invalid login attempts
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void login() {
+    String username = usernameController.text;
+    String password = passwordController.text;
+
+    if (username == "Deepak_Mali" && password == "12345") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Valid Login"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Invalid Login"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Login Page"),
+        backgroundColor: Colors.blue,
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Login",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 30),
+            TextField(
+              controller: usernameController,
+              decoration: InputDecoration(
+                labelText: "Username",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.person),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: "Password",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.lock),
+              ),
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: login,
+              child: Text("Login"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
