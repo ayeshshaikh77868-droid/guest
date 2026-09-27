@@ -1,0 +1,142 @@
+ Simple Class, Object Utilization & Static MembersThis section 
+creates a Student class with instance variables (name, age) and a static member (college).
+Code
+class Student {
+  String name;
+  int age;
+  
+  static String college = "Jai Hind College";
+  
+  Student(this.name, this.age);
+  
+  void display() {
+    print("Name: $name");
+    print("Age: $age");
+    print("College: $college");
+  }
+}
+
+void main() {
+  Student s1 = Student("Deepak", 20);
+  Student s2 = Student("Jay", 19);
+    
+  s1.display();
+  print("");
+  
+  s2.display();
+  print("");
+  
+  print("\nStatic Memeber:");
+  print(Student.college);
+}
+
+
+Practical 3B: Single Inheritance
+This section demonstrates inheriting methods from a single parent class (Animal $\rightarrow$ Dog).
+class Animal {
+  void sound() {
+    print("Animal makes sound");
+  }
+}
+
+class Dog extends Animal {
+  void bark() {
+    print("Dog barks");
+  }
+}
+
+void main() {
+  Dog d = Dog();
+
+  d.sound();
+  d.bark();
+}
+
+
+Practical 3C: Multilevel Inheritance
+This section demonstrates chain inheritance through multiple class levels 
+(Animal $\rightarrow$ Dog $\rightarrow$ Puppy).   
+class Animal {
+  void eat() {
+    print("Animal eats food");
+  }
+}
+
+class Dog extends Animal {
+  void bark() {
+    print("Dog barks");
+  }
+}
+
+class Puppy extends Dog {
+  void weep() {
+    print("Puppy weeps");
+  }
+}
+
+void main() {
+  Puppy p = Puppy();
+
+  p.eat();
+  p.bark();
+  p.weep();
+}
+
+
+Practical 3D: Multiple Interfaces
+This section demonstrates multiple interface implementation using the implements keyword 
+(Father, Mother $\rightarrow$ Child)
+class Father {
+  void showFather() {
+    print("Father Interface");
+  }
+}
+
+class Mother {
+  void showMother() {
+    print("Mother Interface");
+  }
+}
+
+class Child implements Father, Mother {
+  @override
+  void showFather() {
+    print("Implemented Father Interface");
+  }
+
+  @override
+  void showMother() {
+    print("Implemented Mother Interface");
+  }
+}
+
+void main() {
+  Child c = Child();
+
+  c.showFather();
+  c.showMother();
+}
+
+
+Practical 3E: Mixin Concept
+This section demonstrates reusing class code across multiple hierarchies using the mixin and with keywords
+mixin Walking {
+  void walk() {
+    print("Walking...");
+  }
+}
+
+mixin Running {
+  void run() {
+    print("Running...");
+  }
+}
+
+class Human with Walking, Running {}
+
+void main() {
+  Human h = Human();
+
+  h.walk();
+  h.run();
+}
