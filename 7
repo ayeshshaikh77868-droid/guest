@@ -1,0 +1,160 @@
+Practical 7: Smart Device Controller 
+3widget List view->smart devices all devices u can select one selct multiselect  
+Switch->whether u want to on the switch or off ,brightness 0 to 100  Slidder 
+
+
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const SmartDeviceScreen(),
+    );
+  }
+}
+
+class SmartDeviceScreen extends StatefulWidget {
+  const SmartDeviceScreen({super.key});
+
+  @override
+  State<SmartDeviceScreen> createState() => _SmartDeviceScreenState();
+}
+
+class _SmartDeviceScreenState extends State<SmartDeviceScreen> {
+  List<String> devices = [
+    'Light',
+    'Fan',
+    'AC',
+    'TV',
+    'Speaker',
+  ];
+
+  Set<String> selectedDevices = {};
+
+  bool isOn = false;
+  double brightness = 50;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Smart Device Controller'),
+      ),
+
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            const Text(
+              'Select Smart Devices',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            Expanded(
+              child: ListView.builder(
+                itemCount: devices.length,
+                itemBuilder: (context, index) {
+                  String device = devices[index];
+
+                  return CheckboxListTile(
+                    title: Text(device),
+                    value: selectedDevices.contains(device),
+
+                    onChanged: (value) {
+                      setState(() {
+                        if (value == true) {
+                          selectedDevices.add(device);
+                        } else {
+                          selectedDevices.remove(device);
+                        }
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
+
+            const Divider(),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Power',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                Switch(
+                  value: isOn,
+                  onChanged: (value) {
+                    setState(() {
+                      isOn = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              'Brightness: ${brightness.toInt()}%',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            Slider(
+              value: brightness,
+              min: 0,
+              max: 100,
+              divisions: 100,
+              label: '${brightness.toInt()}%',
+              onChanged: (value) {
+                setState(() {
+                  brightness = value;
+                });
+              },
+            ),
+
+            const SizedBox(height: 20),
+
+            Center(
+              child: Text(
+                selectedDevices.isEmpty
+                    ? 'No device selected'
+                    : 'Selected: ${selectedDevices.join(", ")}',
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+}
