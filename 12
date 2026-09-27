@@ -1,0 +1,87 @@
+AIM : Implement different types of gestures
+1.	Single tap 
+2.	doble tape 
+3.	 Long tape 
+4.	Any way to move /drag 
+
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const GestureDemo(),
+    );
+  }
+}
+
+class GestureDemo extends StatefulWidget {
+  const GestureDemo({super.key});
+
+  @override
+  State<GestureDemo> createState() => _GestureDemoState();
+}
+
+class _GestureDemoState extends State<GestureDemo> {
+  String message = "Perform a Gesture";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Gesture Demo"),
+      ),
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              message = "Single Tap";
+            });
+          },
+
+          onDoubleTap: () {
+            setState(() {
+              message = "Double Tap";
+            });
+          },
+
+          onLongPress: () {
+            setState(() {
+              message = "Long Tap";
+            });
+          },
+
+          onPanUpdate: (details) {
+            setState(() {
+              message = "Dragging / Moving";
+            });
+          },
+
+          child: Container(
+            width: 300,
+            height: 300,
+            color: Colors.blue,
+            alignment: Alignment.center,
+            child: Text(
+              message,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
