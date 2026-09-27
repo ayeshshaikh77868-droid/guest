@@ -1,0 +1,87 @@
+In cmd : flutter create --template=package my_calculator
+open that folder click on lib new package name it src
+Then inside src create new dart file name 
+Name calculator.dart
+And add  this code 
+Calculator.dart
+class Calculator {
+  /// Adds two numbers
+  int add(int a, int b) => a + b;
+
+  /// Subtracts [b] from [a]
+  int subtract(int a, int b) => a - b;
+
+  /// Multiplies two numbers
+  int multiply(int a, int b) => a * b;
+
+  /// Divides [a] by [b] (integer division)
+  double divide(int a, int b) {
+    if (b == 0) throw ArgumentError("Division by zero is not allowed");
+    return a / b;
+  }
+}
+
+
+then my calculator.dart file 
+add this 
+Then in test folder file 
+My_calculator_test.dart
+Add this code 
+import 'package:flutter_test/flutter_test.dart';
+import 'package:my_calculator/my_calculator.dart';
+
+void main() {
+  final calc = Calculator();
+
+  test('addition', () {
+    expect(calc.add(3, 2), 5);
+  });
+
+  test('subtraction', () {
+    expect(calc.subtract(5, 2), 3);
+  });
+
+  test('multiplication', () {
+    expect(calc.multiply(3, 4), 12);
+  });
+
+  test('division', () {
+    expect(calc.divide(10, 2), 5);
+  });
+}
+
+
+Create new flutter project 
+Cal_demo
+import 'package:flutter/material.dart';
+import 'package:my_calculator/my_calculator.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final calc = Calculator();
+    final result = calc.subtract(20, 3);
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Calculator Demo"),
+        ),
+        body: Center(
+          child: Text("15 - 3 = $result"),
+        ),
+      ),
+    );
+  }
+}
+
+in yaml file add 
+in dev dependances 
+Pub get
+Pub upgrade
