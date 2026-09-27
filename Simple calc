@@ -1,0 +1,94 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const Calculator(),
+    );
+  }
+}
+
+class Calculator extends StatefulWidget {
+  const Calculator({super.key});
+
+  @override
+  State<Calculator> createState() => _CalculatorState();
+}
+
+class _CalculatorState extends State<Calculator> {
+  TextEditingController n1 = TextEditingController();
+  TextEditingController n2 = TextEditingController();
+
+  double result = 0;
+
+  void calculate(String op) {
+    int a = int.parse(n1.text);
+    int b = int.parse(n2.text);
+
+    setState(() {
+      if (op == '+') result = (a + b).toDouble();
+      if (op == '-') result = (a - b).toDouble();
+      if (op == '*') result = (a * b).toDouble();
+      if (op == '/') result = a / b;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('BASIC CALCULATOR')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: n1,
+              decoration: const InputDecoration(
+                labelText: 'Enter First Number',
+              ),
+            ),
+            TextField(
+              controller: n2,
+              decoration: const InputDecoration(
+                labelText: 'Enter Second Number',
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            Text(
+              'RESULT: $result',
+              style: const TextStyle(fontSize: 25),
+            ),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () => calculate('+'),
+              child: const Text('ADD'),
+            ),
+            ElevatedButton(
+              onPressed: () => calculate('-'),
+              child: const Text('SUBTRACT'),
+            ),
+            ElevatedButton(
+              onPressed: () => calculate('*'),
+              child: const Text('MULTIPLY'),
+            ),
+            ElevatedButton(
+              onPressed: () => calculate('/'),
+              child: const Text('DIVIDE'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
