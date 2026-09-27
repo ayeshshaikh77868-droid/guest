@@ -1,0 +1,290 @@
+In the Project pane on the left, navigate to lib/.  
+Right-click the lib folder and select New > Dart File.
+Create two new files named:
+LoginForm.dart   RegistrationForm.dart
+
+lib/main.dart
+import 'package:flutter/material.dart';
+import 'LoginForm.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Login App",
+      home: LoginPage(),
+    );
+  }
+}
+
+lib/LoginForm.dart:
+import 'package:flutter/material.dart';
+import 'RegistrationForm.dart';
+
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void login() {
+    String username = usernameController.text;
+    String password = passwordController.text;
+
+    if (username == "Deepak_Mali" && password == "12345") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Login Successful"),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RegistrationPage(),
+          ),
+        );
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Invalid Login"),
+            content: Text("Username or Password is incorrect."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Login Page"),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Login",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 30),
+            TextField(
+              controller: usernameController,
+              decoration: InputDecoration(
+                labelText: "Username",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.person),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: "Password",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.lock),
+              ),
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: login,
+              child: Text("Login"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+lib/RegistrationForm.dart
+import 'package:flutter/material.dart';
+
+class RegistrationPage extends StatefulWidget {
+  @override
+  State<RegistrationPage> createState() => _RegistrationPageState();
+}
+
+class _RegistrationPageState extends State<RegistrationPage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+
+  String gender = "Male";
+  bool reading = false;
+  bool music = false;
+  bool sports = false;
+  bool travelling = false;
+
+  String result = "";
+
+  void submitData() {
+    List<String> hobbies = [];
+    if (reading) hobbies.add("Reading");
+    if (music) hobbies.add("Music");
+    if (sports) hobbies.add("Sports");
+    if (travelling) hobbies.add("Travelling");
+
+    setState(() {
+      result = '''Name : ${nameController.text}
+Email : ${emailController.text}
+Mobile : ${mobileController.text}
+Gender : $gender
+Hobbies : ${hobbies.join(", ")}''';
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Registration Successful"),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Registration Form"),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Name"),
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 15),
+            Text("Email"),
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 15),
+            Text("Mobile No"),
+            TextField(
+              controller: mobileController,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            Text("Gender"),
+            Row(
+              children: [
+                Radio(
+                  value: "Male",
+                  groupValue: gender,
+                  onChanged: (value) {
+                    setState(() {
+                      gender = value.toString();
+                    });
+                  },
+                ),
+                Text("Male"),
+                Radio(
+                  value: "Female",
+                  groupValue: gender,
+                  onChanged: (value) {
+                    setState(() {
+                      gender = value.toString();
+                    });
+                  },
+                ),
+                Text("Female"),
+              ],
+            ),
+            SizedBox(height: 20),
+            Text("Hobbies"),
+            CheckboxListTile(
+              title: Text("Reading"),
+              value: reading,
+              onChanged: (value) {
+                setState(() {
+                  reading = value!;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: Text("Music"),
+              value: music,
+              onChanged: (value) {
+                setState(() {
+                  music = value!;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: Text("Sports"),
+              value: sports,
+              onChanged: (value) {
+                setState(() {
+                  sports = value!;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: Text("Travelling"),
+              value: travelling,
+              onChanged: (value) {
+                setState(() {
+                  travelling = value!;
+                });
+              },
+            ),
+            SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: submitData,
+                child: Text("Submit"),
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              result,
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+Dart
